@@ -70,6 +70,11 @@
     return result;
 }
 
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"<DHASN1Attribute: Type: %i; String: %@; Date: %@; Int: %i>",self.type, [self stringValue], [self dateValue], [self integerValue]];
+}
+
 @end
 
 @implementation DHASN1Parser {
