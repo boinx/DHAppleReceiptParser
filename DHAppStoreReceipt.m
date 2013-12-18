@@ -166,6 +166,10 @@
     return [[self attributeByType:DH_ATTRIBUTE_TYPE_APPLICATION_VERSION] stringValue];
 }
 
+- (NSString *)originalApplicationVersion {
+	return [[self attributeByType:DH_ATTRIBUTE_TYPE_ORIGINAL_APPLICATION_VERSION] stringValue];
+}
+
 - (NSData *)opaqueValue {
     return [[self attributeByType:DH_ATTRIBUTE_TYPE_OPAQUE_VALUE] dataValue];
 }
