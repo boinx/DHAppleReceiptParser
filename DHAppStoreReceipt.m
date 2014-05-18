@@ -107,7 +107,7 @@
 @end
 
 @implementation DHAppStoreReceipt {
-    NSDictionary *inAppReceiptsByProductId;
+    NSArray *inAppReceipts;
 }
 
 + (DHAppStoreReceipt *)mainBundleReceipt {
@@ -122,17 +122,17 @@
         receiptData = [self decodePKCS7:receiptData];
 
         NSMutableDictionary *mutableAttributes = [NSMutableDictionary dictionary];
-        NSMutableDictionary *mutableInAppReceipts = [NSMutableDictionary dictionary];
+        NSMutableArray *mutableInAppReceipts = [NSMutableArray array];
         for (DHASN1Attribute *attribute in [self attributesForData:receiptData]) {
             if (DH_ATTRIBUTE_TYPE_IN_APP_RECEIPT == attribute.type) {
                 DHInAppReceipt *inAppReceipt = [[DHInAppReceipt alloc] initWithData:attribute.dataValue];
-                [mutableInAppReceipts setObject:inAppReceipt forKey:inAppReceipt.productId];
+                [mutableInAppReceipts addObject:inAppReceipt];
             } else {
                 [mutableAttributes setObject:attribute forKey:@(attribute.type)];
             }
         }
         attributesByType = [NSDictionary dictionaryWithDictionary:mutableAttributes];
-        inAppReceiptsByProductId = [NSDictionary dictionaryWithDictionary:mutableInAppReceipts];
+        inAppReceipts = [NSArray arrayWithArray:mutableInAppReceipts];
     }
     return self;
 }
@@ -155,7 +155,16 @@
 }
 
 - (DHInAppReceipt *)receiptForProductId:(NSString *)productId {
-    return [inAppReceiptsByProductId objectForKey:productId];
+	
+	for (DHInAppReceipt *receipt in inAppReceipts)
+	{
+		if ([receipt.productId isEqualToString:productId])
+		{
+			return receipt;
+		}
+	}
+	
+	return nil;
 }
 
 - (NSString *)bundleId {
@@ -179,7 +188,7 @@
 }
 
 - (NSArray *)inAppReceipts {
-    return [inAppReceiptsByProductId allValues];
+    return inAppReceipts;
 }
 
 @end
