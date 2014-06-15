@@ -171,6 +171,10 @@
     return [[self attributeByType:DH_ATTRIBUTE_TYPE_BUNDLE_ID] stringValue];
 }
 
+- (NSData *)bundleIdData {
+    return [[self attributeByType:DH_ATTRIBUTE_TYPE_BUNDLE_ID] dataValue];
+}
+
 - (NSString *)applicationVersion {
     return [[self attributeByType:DH_ATTRIBUTE_TYPE_APPLICATION_VERSION] stringValue];
 }

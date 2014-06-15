@@ -53,6 +53,7 @@ typedef enum {
 - (DHInAppReceipt *)receiptForProductId:(NSString *)productId;
 
 @property(readonly) NSString *bundleId;
+@property(readonly) NSData *bundleIdData;
 @property(readonly) NSString *applicationVersion;
 @property(readonly) NSString *originalApplicationVersion;
 @property(readonly) NSData *opaqueValue;
