@@ -60,7 +60,7 @@ INTEGER_encode_der(asn_TYPE_descriptor_t *td, void *sptr,
 	if(st->buf) {
 		uint8_t *buf = st->buf;
 		uint8_t *end1 = buf + st->size - 1;
-		int shift;
+		long shift;
 
 		/* Compute the number of superfluous leading bytes */
 		for(; buf < end1; buf++) {
@@ -288,7 +288,7 @@ INTEGER_map_value2enum(asn_INTEGER_specifics_t *specs, long value) {
 }
 
 static int
-INTEGER_st_prealloc(INTEGER_t *st, int min_size) {
+INTEGER_st_prealloc(INTEGER_t *st, long min_size) {
 	void *p = MALLOC(min_size + 1);
 	if(p) {
 		void *b = st->buf;

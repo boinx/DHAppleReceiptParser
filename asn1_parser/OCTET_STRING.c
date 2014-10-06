@@ -693,8 +693,8 @@ static struct OCTET_STRING__xer_escape_table_s {
 };
 
 static int
-OS__check_escaped_control_char(const void *buf, int size) {
-	size_t i;
+OS__check_escaped_control_char(const void *buf, size_t size) {
+	int i;
 	/*
 	 * Inefficient algorithm which translates the escape sequences
 	 * defined above into characters. Returns -1 if not found.
@@ -919,7 +919,7 @@ static ssize_t OCTET_STRING__convert_binary(void *sptr, const void *chunk_buf, s
 /*
  * Something like strtod(), but with stricter rules.
  */
-static int
+static long
 OS__strtoent(int base, const char *buf, const char *end, int32_t *ret_value) {
 	int32_t val = 0;
 	const char *p;
@@ -977,7 +977,7 @@ static ssize_t OCTET_STRING__convert_entrefs(void *sptr, const void *chunk_buf, 
 	 */
 	for(; p < pend; p++) {
 		int ch = *(const unsigned char *)p;
-		int len;	/* Length of the rest of the chunk */
+		unsigned long len;	/* Length of the rest of the chunk */
 
 		if(ch != 0x26 /* '&' */) {
 			*buf++ = ch;
@@ -1237,7 +1237,7 @@ OCTET_STRING_per_get_characters(asn_per_data_t *po, uint8_t *buf,
 
 	for(; buf < end; buf += bpc) {
 		int code = per_get_few_bits(po, unit_bits);
-		int ch = code + lb;
+		long ch = code + lb;
 		if(code < 0) return -1;	/* WMORE */
 		if(ch > ub) {
 			ASN_DEBUG("Code %d is out of range (%ld..%ld)",
@@ -1297,7 +1297,7 @@ OCTET_STRING_per_put_characters(asn_per_outp_t *po, const uint8_t *buf,
 	}
 
 	for(ub -= lb; buf < end; buf += bpc) {
-		int ch;
+		long ch;
 		uint32_t value;
 		switch(bpc) {
 		case 1: value = *(const uint8_t *)buf; break;
@@ -1508,7 +1508,7 @@ OCTET_STRING_encode_uper(asn_TYPE_descriptor_t *td,
 	int inext = 0;		/* Lies not within extension root */
 	unsigned int unit_bits;
 	unsigned int canonical_unit_bits;
-	unsigned int sizeinunits;
+	unsigned long sizeinunits;
 	const uint8_t *buf;
 	int ret;
 	enum {
@@ -1771,7 +1771,7 @@ OCTET_STRING_fromBuf(OCTET_STRING_t *st, const char *str, int len) {
 
 	/* Determine the original string size, if not explicitly given */
 	if(len < 0)
-		len = strlen(str);
+		len = (int)strlen(str);
 
 	/* Allocate and fill the memory */
 	buf = MALLOC(len + 1);

@@ -51,10 +51,10 @@ typedef struct asn_per_data_s {
  * This function returns -1 if the specified number of bits could not be
  * extracted due to EOD or other conditions.
  */
-int32_t per_get_few_bits(asn_per_data_t *per_data, int get_nbits);
+int32_t per_get_few_bits(asn_per_data_t *per_data, ssize_t get_nbits);
 
 /* Undo the immediately preceeding "get_few_bits" operation */
-void per_get_undo(asn_per_data_t *per_data, int get_nbits);
+void per_get_undo(asn_per_data_t *per_data, ssize_t get_nbits);
 
 /*
  * Extract a large number of bits from the specified PER data pointer.
@@ -62,7 +62,7 @@ void per_get_undo(asn_per_data_t *per_data, int get_nbits);
  * extracted due to EOD or other conditions.
  */
 int per_get_many_bits(asn_per_data_t *pd, uint8_t *dst, int right_align,
-			int get_nbits);
+			ssize_t get_nbits);
 
 /*
  * Get the length "n" from the Unaligned PER stream.
@@ -98,10 +98,10 @@ typedef struct asn_per_outp_s {
 } asn_per_outp_t;
 
 /* Output a small number of bits (<= 31) */
-int per_put_few_bits(asn_per_outp_t *per_data, uint32_t bits, int obits);
+int per_put_few_bits(asn_per_outp_t *per_data, ssize_t bits, ssize_t obits);
 
 /* Output a large number of bits */
-int per_put_many_bits(asn_per_outp_t *po, const uint8_t *src, int put_nbits);
+int per_put_many_bits(asn_per_outp_t *po, const uint8_t *src, ssize_t put_nbits);
 
 /*
  * Put the length "n" to the Unaligned PER stream.
@@ -119,7 +119,7 @@ int uper_put_nslength(asn_per_outp_t *po, size_t length);
 /*
  * Put the normally small non-negative whole number.
  */
-int uper_put_nsnnwn(asn_per_outp_t *po, int n);
+int uper_put_nsnnwn(asn_per_outp_t *po, long n);
 
 #ifdef __cplusplus
 }

@@ -60,9 +60,9 @@
     NSInteger result = 0;
     if ([self dataType] == V_ASN1_INTEGER) {
         const unsigned char *bytes = [value bytes];
-        int length = [value length];
+        NSUInteger length = [value length];
         // Start counting at 2, because 1 is data type (integer) and 2 is length (which we already know)
-        for (int i = 2; i < length; i++) {
+        for (NSUInteger i = 2; i < length; i++) {
             result = result << 8;
             result += bytes[i];
         }
@@ -72,7 +72,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<DHASN1Attribute: Type: %i; String: %@; Date: %@; Int: %i>",self.type, [self stringValue], [self dateValue], [self integerValue]];
+	return [NSString stringWithFormat:@"<DHASN1Attribute: Type: %i; String: %@; Date: %@; Int: %li>",self.type, [self stringValue], [self dateValue], (long)[self integerValue]];
 }
 
 @end

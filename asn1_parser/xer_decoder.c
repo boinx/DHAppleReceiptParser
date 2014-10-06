@@ -60,9 +60,9 @@ xer__token_cb(pxml_chunk_type_e type, const void *_chunk_data, size_t _chunk_siz
  * Fetch the next token from the XER/XML stream.
  */
 ssize_t
-xer_next_token(int *stateContext, const void *buffer, size_t size, pxer_chunk_type_e *ch_type) {
+xer_next_token(size_t *stateContext, const void *buffer, size_t size, pxer_chunk_type_e *ch_type) {
 	struct xer__cb_arg arg;
-	int new_stateContext = *stateContext;
+	size_t new_stateContext = *stateContext;
 	ssize_t ret;
 
 	arg.callback_not_invoked = 1;
@@ -102,7 +102,7 @@ xer_next_token(int *stateContext, const void *buffer, size_t size, pxer_chunk_ty
 #define	RANGLE	0x3e	/* '>' */
 
 xer_check_tag_e
-xer_check_tag(const void *buf_ptr, int size, const char *need_tag) {
+xer_check_tag(const void *buf_ptr, ssize_t size, const char *need_tag) {
 	const char *buf = (const char *)buf_ptr;
 	const char *end;
 	xer_check_tag_e ct = XCT_OPENING;

@@ -22,7 +22,7 @@ per_data_string(asn_per_data_t *pd) {
 }
 
 void
-per_get_undo(asn_per_data_t *pd, int nbits) {
+per_get_undo(asn_per_data_t *pd, ssize_t nbits) {
 	if((ssize_t)pd->nboff < nbits) {
 		assert((ssize_t)pd->nboff < nbits);
 	} else {
@@ -35,7 +35,7 @@ per_get_undo(asn_per_data_t *pd, int nbits) {
  * Extract a small number of bits (<= 31) from the specified PER data pointer.
  */
 int32_t
-per_get_few_bits(asn_per_data_t *pd, int nbits) {
+per_get_few_bits(asn_per_data_t *pd, ssize_t nbits) {
 	size_t off;	/* Next after last bit offset */
 	ssize_t nleft;	/* Number of bits left in this stream */
 	uint32_t accum;
@@ -120,7 +120,7 @@ per_get_few_bits(asn_per_data_t *pd, int nbits) {
  * Extract a large number of bits from the specified PER data pointer.
  */
 int
-per_get_many_bits(asn_per_data_t *pd, uint8_t *dst, int alright, int nbits) {
+per_get_many_bits(asn_per_data_t *pd, uint8_t *dst, int alright, ssize_t nbits) {
 	int32_t value;
 
 	if(alright && (nbits & 7)) {
@@ -242,7 +242,7 @@ uper_get_nsnnwn(asn_per_data_t *pd) {
  * X.691, #10.6
  */
 int
-uper_put_nsnnwn(asn_per_outp_t *po, int n) {
+uper_put_nsnnwn(asn_per_outp_t *po, long n) {
 	int bytes;
 
 	if(n <= 63) {
@@ -268,7 +268,7 @@ uper_put_nsnnwn(asn_per_outp_t *po, int n) {
  * Put a small number of bits (<= 31).
  */
 int
-per_put_few_bits(asn_per_outp_t *po, uint32_t bits, int obits) {
+per_put_few_bits(asn_per_outp_t *po, ssize_t bits, ssize_t obits) {
 	size_t off;	/* Next after last bit offset */
 	size_t omsk;	/* Existing last byte meaningful bits mask */
 	uint8_t *buf;
@@ -291,7 +291,7 @@ per_put_few_bits(asn_per_outp_t *po, uint32_t bits, int obits) {
 	 * Flush whole-bytes output, if necessary.
 	 */
 	if(po->nboff + obits > po->nbits) {
-		int complete_bytes = (po->buffer - po->tmpspace);
+		long complete_bytes = (po->buffer - po->tmpspace);
 		ASN_DEBUG("[PER output %ld complete + %ld]",
 			(long)complete_bytes, (long)po->flushed_bytes);
 		if(po->outper(po->tmpspace, complete_bytes, po->op_key) < 0)
@@ -358,7 +358,7 @@ per_put_few_bits(asn_per_outp_t *po, uint32_t bits, int obits) {
  * Output a large number of bits.
  */
 int
-per_put_many_bits(asn_per_outp_t *po, const uint8_t *src, int nbits) {
+per_put_many_bits(asn_per_outp_t *po, const uint8_t *src, ssize_t nbits) {
 
 	while(nbits) {
 		uint32_t value;

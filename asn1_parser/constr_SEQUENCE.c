@@ -866,7 +866,7 @@ SEQUENCE_encode_xer(asn_TYPE_descriptor_t *td, void *sptr,
 		asn_TYPE_member_t *elm = &td->elements[edx];
 		void *memb_ptr;
 		const char *mname = elm->name;
-		unsigned int mlen = strlen(mname);
+		unsigned long mlen = strlen(mname);
 
 		if(elm->flags & ATF_POINTER) {
 			memb_ptr = *(void **)((void *)sptr + elm->memb_offset);

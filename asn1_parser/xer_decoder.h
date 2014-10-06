@@ -67,7 +67,7 @@ asn_dec_rval_t xer_decode_general(asn_codec_ctx_t *opt_codec_ctx,
 	PXER_TEXT,	/* Plain text between XER tags */
 	PXER_COMMENT	/* A comment, may be part of */
   } pxer_chunk_type_e;
-ssize_t xer_next_token(int *stateContext,
+ssize_t xer_next_token(size_t *stateContext,
 	const void *buffer, size_t size, pxer_chunk_type_e *_ch_type);
 
 /*
@@ -83,7 +83,7 @@ ssize_t xer_next_token(int *stateContext,
 	XCT_UNKNOWN_CL	= 6,	/* Unexpected </closing> tag */
 	XCT_UNKNOWN_BO	= 7	/* Unexpected <modified/> tag */
   } xer_check_tag_e;
-xer_check_tag_e xer_check_tag(const void *buf_ptr, int size,
+xer_check_tag_e xer_check_tag(const void *buf_ptr, ssize_t size,
 		const char *need_tag);
 
 /*
